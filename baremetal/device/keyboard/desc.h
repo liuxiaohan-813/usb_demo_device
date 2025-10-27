@@ -1,0 +1,186 @@
+#include "usb_sdk_hal.h"
+
+const unsigned char DevDes[18]=
+{
+    0x12, /* bLength */
+    0x01, /* bDescriptorType : device_descriptor */
+    0x10,
+    0x01, /* bcdUSB usb2.0 = 0x0200 usb1.1 = 0x0110 usb3.11 = 0x0311 */
+    0x00, /* bDeviceClass */
+    0x00, /* bDeviceSubClass */
+    0x00, /* bDeviceProtocol */
+    0x40, /* bMaxPacketSize */
+    0x66,
+    0x66, /* idVendor : 2 Bytes */
+    0x88,
+    0x88, /* idProduct : 2 Bytes */
+    0x01,
+    0x00, /* bcdDevice rel. 1.00 */
+    0x01, /* Index of manufacturer string */
+    0x02, /* Index of product string */
+    0x00, /* Index of serial number string */
+    0x01  /* bNumConfigurations */
+};
+
+/* ReportDescriptor */
+const unsigned char ReportDescriptor[]=
+{
+    0x05, 0x01, // USAGE_PAGE (Generic Desktop)
+    0x09, 0x06, // USAGE (Keyboard)
+    0xa1, 0x01, // COLLECTION (Application)
+    0x05, 0x07, // USAGE_PAGE (Keyboard)
+    0x19, 0xe0, // USAGE_MINIMUM (Keyboard LeftControl)
+    0x29, 0xe7, // USAGE_MAXIMUM (Keyboard Right GUI)
+    0x15, 0x00, // LOGICAL_MINIMUM (0)
+    0x25, 0x01, // LOGICAL_MAXIMUM (1)
+    0x75, 0x01, // REPORT_SIZE (1)
+    0x95, 0x08, // REPORT_COUNT (8)
+    0x81, 0x02, // INPUT (Data,Var,Abs)
+    0x95, 0x01, // REPORT_COUNT (1)
+    0x75, 0x08, // REPORT_SIZE (8)
+    0x81, 0x03, // INPUT (Cnst,Var,Abs)
+    0x95, 0x05, // REPORT_COUNT (5)  5 bit
+    0x75, 0x01, // REPORT_SIZE (1)
+    0x05, 0x08, // USAGE_PAGE (LEDs)
+    0x19, 0x01, // USAGE_MINIMUM (Num Lock)
+    0x29, 0x05, // USAGE_MAXIMUM (Kana)
+    0x91, 0x02, // OUTPUT (Data,Var,Abs)
+    0x95, 0x01, // REPORT_COUNT (1)
+    0x75, 0x03, // REPORT_SIZE (3)
+    0x91, 0x03, // OUTPUT (Cnst,Var,Abs)
+    0x95, 0x06, // REPORT_COUNT (6)
+    0x75, 0x08, // REPORT_SIZE (8)
+    0x15, 0x00, // LOGICAL_MINIMUM (0)
+    0x25, 0x65, // LOGICAL_MAXIMUM (101)
+    0x05, 0x07, // USAGE_PAGE (Keyboard)
+    0x19, 0x00, // USAGE_MINIMUM (Reserved (no event indicated))
+    0x29, 0x65, // USAGE_MAXIMUM (Keyboard Application)
+    0x81, 0x00, // INPUT (Data,Ary,Abs)
+    0xc0        // END_COLLECTION
+};
+
+/* dev Configurations */
+const unsigned char ConDes[9 + 9 + 9 + 7]=
+{
+    // Configuation Descriptor
+    0x09, // bLength
+    0x02, // bDescpriptorType
+    sizeof(ConDes) & 0xFF,
+    (sizeof(ConDes)) >> 8 & 0xFF, // wTotalLength
+    0x01, // bNumInterfaces
+    0x01, // bConfigurationValue
+    0x00, // iConfiguration
+    0x80, // bmAttributes
+    0x32, // bMaxPower : 100mA
+
+    // Interface
+    0x09, // bLength
+    0x04, // bDescriptorType
+    0x00, // bInterfaceNumber
+    0x00, // bAlternateSetting
+    0x01, // bNumEndpoints(not include Ep0)
+    0x03, // bInterfaceClass (Hid)
+    0x01, // bInterfaceSubClass
+    0x01, // bInterfaceProtocol : keyboard
+    0x00, // iInterface
+    // conf HID descriptor
+    0x09, // bLength
+    0x21, // bDescriptorType
+    0x11,
+    0x01, // bcdHID : 0x0111
+    0x00, // bContryCode
+    0x01, // bNumDescriptor
+    0x22, // bDescriptorType
+    sizeof(ReportDescriptor) & 0xFF,
+    (sizeof(ReportDescriptor) >> 8) & 0xFF, // wDescriptorLength
+    // Endpoint
+    0x07, // bLength
+    0x05, // bDescriptorType
+    0x81, // Ep1 : In
+    0x03, // bmAttributes : Interrupt
+    0x08,
+    0x00, // wMaxPackeSize : 0x0008
+    0xA  // bInterval : 10ms
+};
+
+/* langDes */
+const unsigned char LangDes[]=
+{
+    0x04,
+    0x03,
+    0x09,
+    0x04
+};
+/* Manuf */
+const unsigned char Manuf_Des[]=
+{
+    0x12,
+    0x03,
+    0x68, 0x00, //hezaizai
+    0x65, 0x00,
+    0x7A, 0x00,
+    0x61, 0x00,
+    0x69, 0x00,
+    0x7A, 0x00,
+    0x61, 0x00,
+    0x69, 0x00,
+};
+/* product Des */
+const unsigned char Prod_Des[]=
+{
+    0x32,  // 修改长度：0x32 = 50字节 (25个Unicode字符 × 2 + 2字节头部)
+    0x03,
+    0x44, 0x00, // Demo USB2.0 optical Mouse
+    0x65, 0x00,
+    0x6D, 0x00,
+    0x6F, 0x00,
+    0x20, 0x00,
+    0x55, 0x00,
+    0x53, 0x00,
+    0x42, 0x00,
+    0x32, 0x00,
+    0x2E, 0x00,
+    0x30, 0x00,
+    0x20, 0x00,
+    0x6F, 0x00,
+    0x70, 0x00,
+    0x74, 0x00,
+    0x69, 0x00,
+    0x63, 0x00,
+    0x61, 0x00,
+    0x6C, 0x00,
+    0x20, 0x00,
+    0x4D, 0x00,
+    0x6F, 0x00,
+    0x75, 0x00,
+    0x73, 0x00,
+    0x65, 0x00,
+};
+/* product ser */
+const unsigned char SerDes[18] =
+{
+    0x12,
+    0x03,
+    0x32, 0x00, // 20251024
+    0x30, 0x00,
+    0x32, 0x00,
+    0x35, 0x00,
+    0x31, 0x00,
+    0x30, 0x00,
+    0x32, 0x00,
+    0x34, 0x00,
+};
+
+uint8_t DeviceQualifierDesc[] =
+{
+    0x0A,
+    0x06,
+    0x10,
+    0x01,
+    0x00,
+    0x00,
+    0x00,
+    0x40,
+    0x01,
+    0x00,
+};
