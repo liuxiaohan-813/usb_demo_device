@@ -1,5 +1,3 @@
-#include "../../driver/usb.h"
-
 typedef	union _REQUEST_PACK {
 	unsigned char buffer[8];
 	struct {
@@ -10,6 +8,22 @@ typedef	union _REQUEST_PACK {
 		uint16_t wLength;
 	} r;
 } mREQUEST_PACKET, *mpREQUEST_PACKET;
+
+enum bRequest_ID {
+    GET_STATUS = 0,
+    CLEAR_FEATURE = 1,
+    RESERVED0 = 2,
+    SET_FEATURE = 3,
+    RESERVED1 = 4,
+    SET_ADDRESS = 5,
+    GET_DESCRIPTOR = 6,
+    SET_DESCRIPTOR = 7,
+    GET_CONFIGURATION = 8,
+    SET_CONFIGURATION = 9,
+    GET_INTERFACE = 10,
+    SET_INTERFACE = 11,
+    SYNCH_FRAME = 12,
+};
 
 const unsigned char DevDes[18]=
 {

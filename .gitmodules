@@ -1,6 +1,3 @@
-[submodule "Components/tinyprintf"]
-	path = Components/tinyprintf
-	url = git@github.com:cjlano/tinyprintf.git
-[submodule "baremetal/tinyprintf"]
-	path = baremetal/tinyprintf
+[submodule "baremetal/Components/tinyprintf"]
+	path = baremetal/Components/tinyprintf
 	url = git@github.com:cjlano/tinyprintf.git

@@ -79,22 +79,6 @@ void USB_SetDevAddress(uint8_t address)
     REG32(USB_COM_CFG_BASE + 0x4) |= address << 8;
 }
 
-void UsbEp0Up(void)
-{
-    uint8_t len;
-
-    if (mVarSetupLength > EP0_MAX_LEN) {
-        len = EP0_MAX_LEN;
-        mVarSetupLength -= len;
-    } else {
-        len = mVarSetupLength;
-        mVarSetupLength = 0;
-        setUpStage = 0;
-    }
-    FIFOWrite(0, len, (void *)VarSetupDescr);
-    VarSetupDescr += len;
-}
-
 void UsbBusReset(void)
 {
     REG32(USB_COM_CFG_BASE + 0x4) |= BIT(1);

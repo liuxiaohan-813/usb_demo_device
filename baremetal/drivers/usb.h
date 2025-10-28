@@ -5,6 +5,9 @@
 
 #define USB_COM_CFG_BASE                    0x10020000
 
+#define DMA_WRITE  0
+#define DMA_READ   1
+
 typedef enum {
     USB_OTG_SPEED_FULL = 0U,
     USB_OTG_SPEED_HIGH = 1U,
@@ -30,8 +33,19 @@ typedef unsigned char BYTE;
 typedef unsigned short WORD;
 #endif
 
-#define MIN(a, b) ((a) < (b) ? (a) : (b))
+void USB_PhyInit(void);
+void HAL_PCD_DevConnect(void);
+void USB_ActivateEndpoint(uint32_t epnum, uint32_t is_in, uint32_t fifosize);
+uint32_t ref_log2(uint32_t fifosize);
+void USB_SetDeviceConnectTime(void);
+void USB_SetDevSpeed(USB_Speed speed);
+void USB_SetCurrentMode(USB_OTG_ModeTypeDef mode);
+uint32_t USB_ReadEPDetailedIntStatus(uint32_t epnum);
+uint32_t USB_ReadDevAllEpInterrupt(void);
+void UsbBusReset(void);
 
+
+void dma_cfg(uint8_t dma_ch, uint8_t ep, uint8_t dir, uint32_t start_addr, uint32_t trans_count);
 void FIFORead(int nEP, int nBytes, void * pDst);
 void FIFOWrite(int nEP, int nBytes, void * pSrc);
 

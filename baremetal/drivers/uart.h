@@ -40,8 +40,11 @@ typedef struct {
 } USART_TypeDef;
 
 FlagStatus USART_GetITStatus(USART_TypeDef *USARTx, uint32_t USART_IT);
+
 uint8_t USART_ReceiveData(USART_TypeDef *USARTx);
+
 void USART_ITConfig(USART_TypeDef *USARTx, uint32_t USART_IE, ControlStatus Status);
+
 void USART_Set_RxWaterMark(USART_TypeDef *USARTx, uint32_t Watermark);
 
 #endif

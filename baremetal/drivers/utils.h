@@ -1,6 +1,14 @@
 #ifndef UTILS_H
 #define UTILS_H
 
+#include <stdint.h>
+
+// typedef unsigned char uint8_t;
+// typedef unsigned short uint16_t;
+// typedef unsigned int uint32_t;
+// typedef int int32_t;
+
+
 #define BITMASK_MAX                         0xFFFFFFFFUL
 #define BITOFS_MAX                          31
 
@@ -50,6 +58,8 @@
 #define ADDR16P(addr)                       ((uint16_t *)(uintptr_t)(addr))
 #define ADDR32P(addr)                       ((uint32_t *)(uintptr_t)(addr))
 #define ADDR64P(addr)                       ((uint64_t *)(uintptr_t)(addr))
+
+#define MIN(a, b) ((a) < (b) ? (a) : (b))
 
 typedef enum {
     RESET = 0,
